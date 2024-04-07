@@ -103,7 +103,7 @@ results <- results %>% filter(!is.na(results$IHS))
 #Plot absolute iHS value
 manhattanplot(results,pval = F,threshold = 5,ignore_sign = T)
 
-#calculate candidate regions where an SNP has maximum iHS >5. Scan window size 500 KB.
+#calculate candidate regions where an SNP has maximum iHS >5. Scan window size 50 KB.
 candidate <- calc_candidate_regions(results,threshold = 5, 
                                     ignore_sign = F,
                                     window_size = 500000,
@@ -183,11 +183,11 @@ manhattanplot(xpehh.hill_Non_dairy,pval = F,threshold = c(-4,4),ignore_sign = F)
 manhattanplot(xpehh.hill_Plain,pval = F,threshold = c(-4,4),ignore_sign = F)
 
 
-#calculate candidate regions where an SNP has maximum iHS >3. Scan window size 40 KB.
-candidate.hill_exo <- calc_candidate_regions(xpehh.hill_exo,threshold = 4, ignore_sign = T,window_size = 40000,join_neighbors = T)
-candidate.hill_Dairy <- calc_candidate_regions(xpehh.hill_Dairy,threshold = 4, ignore_sign = T,window_size = 40000,join_neighbors = T)
-candidate.hill_Non_dairy <- calc_candidate_regions(xpehh.hill_Non_dairy,threshold = 4, ignore_sign = T,window_size = 40000,join_neighbors = T)
-candidate.hill_Plain <- calc_candidate_regions(xpehh.hill_Plain,threshold = 4, ignore_sign = T,window_size = 40000,join_neighbors = T)
+#calculate candidate regions where an SNP has maximum iHS >3. Scan window size 50 KB.
+candidate.hill_exo <- calc_candidate_regions(xpehh.hill_exo,threshold = 4, ignore_sign = T,window_size = 50000,join_neighbors = T)
+candidate.hill_Dairy <- calc_candidate_regions(xpehh.hill_Dairy,threshold = 4, ignore_sign = T,window_size = 50000,join_neighbors = T)
+candidate.hill_Non_dairy <- calc_candidate_regions(xpehh.hill_Non_dairy,threshold = 4, ignore_sign = T,window_size = 50000,join_neighbors = T)
+candidate.hill_Plain <- calc_candidate_regions(xpehh.hill_Plain,threshold = 4, ignore_sign = T,window_size = 50000,join_neighbors = T)
 
 
 
