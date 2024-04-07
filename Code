@@ -103,7 +103,7 @@ results <- results %>% filter(!is.na(results$IHS))
 #Plot absolute iHS value
 manhattanplot(results,pval = F,threshold = 5,ignore_sign = T)
 
-#calculate candidate regions where an SNP has maximum iHS >5. Scan window size 40 KB.
+#calculate candidate regions where an SNP has maximum iHS >5. Scan window size 500 KB.
 candidate <- calc_candidate_regions(results,threshold = 5, 
                                     ignore_sign = F,
                                     window_size = 500000,
