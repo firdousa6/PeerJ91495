@@ -5,6 +5,8 @@ Code for PeerJ 91495 publication
 #Original authors/ developers retain the original and supplementary rights. 
 #Code for PeerJ Article 91495 (https://peerj.com/manuscripts/91495/)
 #Genomic landscape reveals evolutionary footprints of adaptability in Indian hill cattle 
+#The codes used in R-programming environment and other programs (PLINK, etc.) have been delineated in two files for easy follow by readers.
+
 
 The code on Github provided section wise code for the publication entitled "Genomic landscape reveals evolutionary footprints of adaptability in Indian hill cattle" under active consideration at PeerJ journal platform. 
 The sections and code under the manuscript include:
@@ -36,3 +38,5 @@ S. No.	Software/ Program	  Purpose*	    Link to Manual/Vignette
 8.		BioMart ENSEMBL	Identification of overlapping genes around selective sweeps	https://asia.ensembl.org/info/data/biomart/index.html 
 
 *Purpose is as per usage in the current manuscript. The software/ programs/ packages may be useful for other purposes too. 
+
+#For any queries, contact corresponding author at firdousa61@gmail.com
