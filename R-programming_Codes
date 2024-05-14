@@ -2,73 +2,19 @@
 #Genomic landscape reveals evolutionary footprints of adaptability in Indian hill cattle 
 
 
-
-#2.2 Preparation of datasets, quality control, and phasing 
-#Merging datasets
-./vcftools vcf-concat <<file1.vcf>> <<file2.vcf>> ... > merged.vcf
-./plink --file <<Name>> --merge-list <<allfiles.txt with file names>> --make-bed --cow --out mynewdata
-
-
-#Quality control using different thresholds
-./plink --bfile <<mynewdata>> --geno 0.1 --maf 0.05 --hwe 0.000001 --autosome --cow --make-bed --out QC_data 
-
-#Designing data-subsets
-./plink --bfile <<mynewdata>> --keep <<subset_list.txt>> --autosome --cow --make-bed --out subset_data 
-
-#Removing marker duplicates
-./plink --bfile Vrinda-ref --list-duplicate-vars --cow
-./plink --bfile subset_data --cow --exclude plink.dupvar --recode vcf --cow--out subsetdup_data 
-
-#Phasing datasets
-java -jar beagle.<<version>>.jar gt=subsetdup_data.vcf out=subset_data_phased
-
-
-
 #2.3 Population structure 
-#Principal component analysis 
-#Making a GRM
-./gcta64 --bfile QC_data --make-grm --out QC_data_grm --autosome-num 29
-
-#Getting PCs from GRM
-./gcta64 --grm QC_data_grm --pca 20 --out QC_data_PC
-
 #Plotting PCA results using ggplot2 package in R
 >library(ggplot2)
 >tbl<-read.table("QC_data_PC.eigenvec", header=T, sep=",")
 >ggplot(tbl,mapping=aes(PC1,PC2,color=POP))+geom_point()
  
 #Treemix analysis 
-./plink --bfile QC_data --freq --within <<Breed_groups.csv>> --out QC_data_stem --cow
-#Convert data in treemix-format 
-./plink2treemix.py QC_data.frq.gz treemix.frq.gz
-./treemix treemix.frq.gz output.prefix
-
 #Plotting Treemix results in R
 >source("plotting_funcs.R")
 >plot_tree("output.prefix")
 
 
 #2.4 Selection signature analysis 
-#Preparing for iHS and XPEHH analysis 
-./plink --vcf <<subset_data_phased.vcf.gz>> --chr 1 --double-id --cow --make-bed --recode-vcf --out 1_exo
-
-#Repeat for all autosomes
-./plink --vcf <<subset_data_phased.vcf.gz>> --chr 2 --double-id --cow --make-bed --recode-vcf --out 2_exo
-.
-.
-.
-
-
-#Repeat for all population groups (Hill, Dairy, Non-dairy and Plain breeds)
-./plink --vcf <<subset_data_phased.vcf.gz>> --chr 1 --double-id --cow --make-bed --recode-vcf --out 1_Dairy
-
-#Repeat for all autosomes
-./plink --vcf <<subset_data_phased.vcf.gz>> --chr 2 --double-id --cow --make-bed --recode-vcf --out 2_Dairy
-.
-.
-.
-
-
 #2.4.1 Intra-population selection signatures
 #iHS
 
@@ -103,10 +49,10 @@ results <- results %>% filter(!is.na(results$IHS))
 #Plot absolute iHS value
 manhattanplot(results,pval = F,threshold = 5,ignore_sign = T)
 
-#calculate candidate regions where an SNP has maximum iHS >5. Scan window size 50 KB.
+#calculate candidate regions where an SNP has maximum iHS >5. Scan window size 2000 KB.
 candidate <- calc_candidate_regions(results,threshold = 5, 
                                     ignore_sign = F,
-                                    window_size = 500000,
+                                    window_size = 2000000,
                                     join_neighbors = T)
 
 
@@ -178,19 +124,15 @@ xpehh.hill_Plain <- ies2xpehh(scan_pop1 =  wgscan.hill,
 #Plotting and analysis (ADJUST PARAEMTERS ACCORDING TO YOUR CHOICE)
 #Plot XPEHH value
 manhattanplot(xpehh.hill_exo,pval = F,threshold = c(-4,4),ignore_sign = F)
-manhattanplot(xpehh.hill_Dairy,pval = F,threshold = c(-4,4),ignore_sign = F)
-manhattanplot(xpehh.hill_Non_dairy,pval = F,threshold = c(-4,4),ignore_sign = F)
-manhattanplot(xpehh.hill_Plain,pval = F,threshold = c(-4,4),ignore_sign = F)
+.
+.
+. 
+#Repeat for other comparisons
 
 
-#calculate candidate regions where an SNP has maximum iHS >3. Scan window size 50 KB.
-candidate.hill_exo <- calc_candidate_regions(xpehh.hill_exo,threshold = 4, ignore_sign = T,window_size = 50000,join_neighbors = T)
-candidate.hill_Dairy <- calc_candidate_regions(xpehh.hill_Dairy,threshold = 4, ignore_sign = T,window_size = 50000,join_neighbors = T)
-candidate.hill_Non_dairy <- calc_candidate_regions(xpehh.hill_Non_dairy,threshold = 4, ignore_sign = T,window_size = 50000,join_neighbors = T)
-candidate.hill_Plain <- calc_candidate_regions(xpehh.hill_Plain,threshold = 4, ignore_sign = T,window_size = 50000,join_neighbors = T)
-
-
-
-#2.5 Functional annotation of selection signature regions
-#Search candidate regions in biomart Ensembl
-#Done through a user-friendly interface in Ensembl website by providing the chromosomal regions delineated on iHS and XPEHH analysis as input
+#calculate candidate regions where an SNP has maximum iHS >3. Scan window size 2000 KB.
+candidate.hill_exo <- calc_candidate_regions(xpehh.hill_exo,threshold = 4, ignore_sign = T,window_size = 2000000,join_neighbors = T)
+.
+.
+.
+#Repeat for other comparisons
